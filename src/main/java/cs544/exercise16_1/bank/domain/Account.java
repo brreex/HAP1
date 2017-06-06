@@ -2,13 +2,25 @@ package cs544.exercise16_1.bank.domain;
 
 import java.util.*;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+@Entity
 public class Account {
+	@Id
 	long accountnumber;
+	@OneToMany
 	Collection<AccountEntry> entryList = new ArrayList<AccountEntry>();
+	@ManyToOne
 	Customer customer;
 
 	
+	public void setEntryList(Collection<AccountEntry> entryList) {
+		this.entryList = entryList;
+	}
 	public Account (long accountnr){
 		this.accountnumber = accountnr;
 	}

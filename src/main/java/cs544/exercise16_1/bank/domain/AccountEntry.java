@@ -2,7 +2,15 @@ package cs544.exercise16_1.bank.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class AccountEntry {
+	@Id
+	@GeneratedValue
+	private int id;
 	private Date date;
 	private double amount;
 	private String description;
@@ -10,6 +18,14 @@ public class AccountEntry {
 	private String fromPersonName;
 	
 	public AccountEntry() {
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public AccountEntry(Date date, double amount, String description, String fromAccountNumber, String fromPersonName) {
