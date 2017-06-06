@@ -1,7 +1,7 @@
 package cs544.exercise16_1.bank.service;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,15 +10,12 @@ import cs544.exercise16_1.bank.HibernateUtil;
 import cs544.exercise16_1.bank.dao.AccountDAO;
 import cs544.exercise16_1.bank.dao.IAccountDAO;
 import cs544.exercise16_1.bank.domain.Account;
+import cs544.exercise16_1.bank.domain.AccountEntry;
 import cs544.exercise16_1.bank.domain.Customer;
 import cs544.exercise16_1.bank.jms.IJMSSender;
 import cs544.exercise16_1.bank.jms.JMSSender;
 import cs544.exercise16_1.bank.logging.ILogger;
 import cs544.exercise16_1.bank.logging.Logger;
-
-
-
-
 
 public class AccountService implements IAccountService {
 	private IAccountDAO accountDAO;
@@ -49,7 +46,11 @@ public class AccountService implements IAccountService {
 		Transaction tx = sf.getCurrentSession().beginTransaction();
 		
 		Account account = accountDAO.loadAccount(accountNumber);
-		account.deposit(amount);
+		AccountEntry accountEntry = new AccountEntry(new Date(), amount, "deposit", "", "");
+		accountEntry.setAccount(account);
+		
+		account.deposit(accountEntry);
+
 		accountDAO.updateAccount(account);
 		logger.log("deposit with parameters accountNumber= "+accountNumber+" , amount= "+amount);
 		if (amount > 10000){
@@ -85,7 +86,11 @@ public class AccountService implements IAccountService {
 		Transaction tx = sf.getCurrentSession().beginTransaction();
 		Account account = accountDAO.loadAccount(accountNumber);
 		double amountDollars = currencyConverter.euroToDollars(amount);
-		account.deposit(amountDollars);
+		
+		AccountEntry accountEntry = new AccountEntry(new Date(), amountDollars, "deposite", "", "");
+		accountEntry.setAccount(account);
+		
+		account.deposit(accountEntry);
 		accountDAO.updateAccount(account);
 		tx.commit();
 		logger.log("depositEuros with parameters accountNumber= "+accountNumber+" , amount= "+amount);

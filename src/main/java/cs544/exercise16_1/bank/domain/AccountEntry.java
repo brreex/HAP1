@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class AccountEntry {
@@ -16,12 +17,22 @@ public class AccountEntry {
 	private String description;
 	private String fromAccountNumber;
 	private String fromPersonName;
+	@ManyToOne
+	private Account account;
 	
 	public AccountEntry() {
 	}
 
 	public int getId() {
 		return id;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public void setId(int id) {
@@ -76,5 +87,13 @@ public class AccountEntry {
 	public void setFromPersonName(String fromPersonName) {
 		this.fromPersonName = fromPersonName;
 	}
+
+	@Override
+	public String toString() {
+		return "AccountEntry [id=" + id + ", date=" + date + ", amount=" + amount + ", description=" + description
+				+ ", fromAccountNumber=" + fromAccountNumber + ", fromPersonName=" + fromPersonName + ", account="
+				+ account + "]";
+	}
+	
 	
 }

@@ -11,7 +11,8 @@ public class AccountDAO implements IAccountDAO {
 	private SessionFactory sf = HibernateUtil.getSessionFactory();
 	
 	public void saveAccount(Account account) {
-		sf.getCurrentSession().persist(account);
+		sf.getCurrentSession().save(account.getCustomer());
+		sf.getCurrentSession().save(account);
 	}
 
 	public void updateAccount(Account account) {

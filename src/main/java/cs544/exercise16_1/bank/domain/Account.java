@@ -2,8 +2,9 @@ package cs544.exercise16_1.bank.domain;
 
 import java.util.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -12,11 +13,14 @@ import javax.persistence.OneToMany;
 public class Account {
 	@Id
 	long accountnumber;
-	@OneToMany
+	@OneToMany(mappedBy="account",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	Collection<AccountEntry> entryList = new ArrayList<AccountEntry>();
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	Customer customer;
 
+	public Account(){
+		
+	}
 	
 	public void setEntryList(Collection<AccountEntry> entryList) {
 		this.entryList = entryList;
@@ -37,9 +41,8 @@ public class Account {
 		}
 		return balance;
 	}
-	public void deposit(double amount){
-		AccountEntry entry = new AccountEntry(new Date(), amount, "deposit", "", "");
-		entryList.add(entry);
+	public void deposit(AccountEntry accountEntry){
+		entryList.add(accountEntry);
 	}
 	public void withdraw(double amount){
 		AccountEntry entry = new AccountEntry(new Date(), -amount, "withdraw", "", "");
